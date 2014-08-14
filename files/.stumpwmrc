@@ -1,0 +1,52 @@
+t;-*-Lisp-*-
+
+;; Can only start swank if stumpwm
+;; was compiled with sbcl, due to
+;; threading issues.
+(require 'swank)
+(swank:create-server)
+
+(in-package :stumpwm)
+
+;; Custom keybindings
+(defcommand screen-saver () ()
+  (run-shell-command "gnome-screensaver-command -l"))
+(defcommand xterminal () ()
+  (run-shell-command "x-terminal-emulator"))
+
+(define-key *root-map* (kbd "M-l") "screen-saver")
+(define-key *root-map* (kbd "c") "xterminal")
+(define-key *root-map* (kbd "C-c") "xterminal")
+
+;; Click to focus
+(setf *mouse-focus-policy* :click)
+
+;;;; modeline, might use in future
+;; (setf *mode-line-background-color* "Black"
+;;       *mode-line-foreground-color* "Grey"
+;;       *mode-line-border-color* "Grey"
+;;       *mode-line-timeout* 1
+;;       *mode-line-position* :bottom)
+;; (setf *screen-mode-line-format*
+;;       (list "%g %W | "
+;;             '(:eval (run-shell-command "date" t))))
+;;(mode-line)
+
+;;; Window Appearance
+(setf *normal-border-width* 0
+      *maxsize-border-width* 0
+      *transient-border-width* 1
+      *window-border-style* :thin) ; :thick :thin :tight :none
+
+;;;; Setup stuff
+;; asdf:load-system :amixer from  stumpwm-contrib
+(load-module "amixer")
+
+(define-key *top-map* (kbd "XF86AudioLowerVolume") "amixer-Front-1-")
+(define-key *top-map* (kbd "XF86AudioRaiseVolume") "amixer-Front-1+")
+(define-key *top-map* (kbd "XF86AudioMute") "amixer-Front-toggle")
+
+
+;;--------------------------------------------------------------------
+;; startup command
+(run-shell-command "~/.scripts/startup.sh")
