@@ -1,4 +1,4 @@
-t;-*-Lisp-*-
+ t;-*-Lisp-*-
 
 ;; Can only start swank if stumpwm
 ;; was compiled with sbcl, due to
@@ -14,9 +14,22 @@ t;-*-Lisp-*-
 (defcommand xterminal () ()
   (run-shell-command "x-terminal-emulator"))
 
+;; (defcommand testing (string) ((:rest "stuff"))
+;;   (let ((*executing-stumpwm-command* nil))
+;;     (message "~a" string)))
+;; (define-key *root-map* (kbd "[") "testing a")
+
 (define-key *root-map* (kbd "M-l") "screen-saver")
 (define-key *root-map* (kbd "c") "xterminal")
 (define-key *root-map* (kbd "C-c") "xterminal")
+
+(define-key *top-map* (kbd "C-M-Up") "move-window up")
+(define-key *top-map* (kbd "C-M-Right") "move-window right")
+(define-key *top-map* (kbd "C-M-Left") "move-window left")
+(define-key *top-map* (kbd "C-M-Down") "move-window down")
+
+(define-key *root-map* (kbd "F11") "restore-window-placement-rules")
+(define-key *root-map* (kbd "F12") "dump-window-placement-rules ~/.stump/stump-placements-test")
 
 ;; Click to focus
 (setf *mouse-focus-policy* :click)
@@ -39,14 +52,15 @@ t;-*-Lisp-*-
       *window-border-style* :thin) ; :thick :thin :tight :none
 
 ;;;; Setup stuff
-;; asdf:load-system :amixer from  stumpwm-contrib
+(set-contrib-dir "~/workspace/cl/stumpwm-contrib")
 (load-module "amixer")
 
 (define-key *top-map* (kbd "XF86AudioLowerVolume") "amixer-Front-1-")
 (define-key *top-map* (kbd "XF86AudioRaiseVolume") "amixer-Front-1+")
-(define-key *top-map* (kbd "XF86AudioMute") "amixer-Front-toggle")
+(define-key *top-map* (kbd "XF86AudioMute") "amixer-Master-toggle pulse")
 
-
+(restore-from-file "~/.stump/stump-frames")
+(restore-window-placement-rules "~/.stump/stump-placements")
 ;;--------------------------------------------------------------------
 ;; startup command
 (run-shell-command "~/.scripts/startup.sh")
