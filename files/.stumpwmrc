@@ -1,4 +1,4 @@
- t;-*-Lisp-*-
+;-*-Lisp-*-
 
 ;; Can only start swank if stumpwm
 ;; was compiled with sbcl, due to
@@ -13,23 +13,53 @@
   (run-shell-command "gnome-screensaver-command -l"))
 (defcommand xterminal () ()
   (run-shell-command "x-terminal-emulator"))
+(defcommand clementine-cmd (flag) (:string)
+  (run-shell-command (concat "clementine " flag)))
 
-;; (defcommand testing (string) ((:rest "stuff"))
-;;   (let ((*executing-stumpwm-command* nil))
-;;     (message "~a" string)))
-;; (define-key *root-map* (kbd "[") "testing a")
+(defcommand firefox () ()
+  (run-or-raise "firefox" '(:class "Firefox")))
+(defcommand thunderbird () ()
+  (run-or-raise "thunderbird" '(:class "Thunderbird")))
+(defcommand clementine (toggle) (:string)
+  (run-or-raise "clementine" '(:class "Clementine")))
+(defcommand xchat () ()
+  (run-or-raise "xchat" '(:class "Xchat")))
+(defcommand pidgin () ()
+  (run-or-raise "pidgin" '(:class "Pidgin")))
 
+
+;; top level mappings
+(define-key *top-map* (kbd "s-Up") "move-window up")
+(define-key *top-map* (kbd "s-Right") "move-window right")
+(define-key *top-map* (kbd "s-Left") "move-window left")
+(define-key *top-map* (kbd "s-Down") "move-window down")
+
+(define-key *top-map* (kbd "C-M-Right") "gnext")
+(define-key *top-map* (kbd "C-M-Left") "gprev")
+
+(define-key *top-map* (kbd "M-Tab") "pull-hidden-next")
+(define-key *top-map* (kbd "s-Tab") "pull-hidden-previous")
+
+;; root level mappings
 (define-key *root-map* (kbd "M-l") "screen-saver")
 (define-key *root-map* (kbd "c") "xterminal")
 (define-key *root-map* (kbd "C-c") "xterminal")
 
-(define-key *top-map* (kbd "C-M-Up") "move-window up")
-(define-key *top-map* (kbd "C-M-Right") "move-window right")
-(define-key *top-map* (kbd "C-M-Left") "move-window left")
-(define-key *top-map* (kbd "C-M-Down") "move-window down")
-
 (define-key *root-map* (kbd "F11") "restore-window-placement-rules")
-(define-key *root-map* (kbd "F12") "dump-window-placement-rules ~/.stump/stump-placements-test")
+(define-key *root-map* (kbd "F12") "dump-window-placement-rules")
+
+(setf *launcher-keybindings*
+ (let ((launch-map (make-sparse-keymap)))
+   (define-key launch-map (kbd "f") "firefox")
+   (define-key launch-map (kbd "e") "emacs")
+   (define-key launch-map (kbd "t") "thunderbird")
+   (define-key launch-map (kbd "c") "clementine")
+   (define-key launch-map (kbd "x") "xchat")
+   (define-key launch-map (kbd "p") "pidgin")
+   launch-map))
+
+(define-key *root-map* (kbd "l") '*launcher-keybindings*)
+(define-key *root-map* (kbd "C-l") '*launcher-keybindings*)
 
 ;; Click to focus
 (setf *mouse-focus-policy* :click)
@@ -46,8 +76,8 @@
 ;;(mode-line)
 
 ;;; Window Appearance
-(setf *normal-border-width* 0
-      *maxsize-border-width* 0
+(setf *normal-border-width* 1
+      *maxsize-border-width* 1
       *transient-border-width* 1
       *window-border-style* :thin) ; :thick :thin :tight :none
 
@@ -58,9 +88,11 @@
 (define-key *top-map* (kbd "XF86AudioLowerVolume") "amixer-Front-1-")
 (define-key *top-map* (kbd "XF86AudioRaiseVolume") "amixer-Front-1+")
 (define-key *top-map* (kbd "XF86AudioMute") "amixer-Master-toggle pulse")
+(define-key *top-map* (kbd "XF86AudioPlay") "clementine-cmd -t")
 
-(restore-from-file "~/.stump/stump-frames")
-(restore-window-placement-rules "~/.stump/stump-placements")
 ;;--------------------------------------------------------------------
+(restore-from-file "~/.stump/default-frames")
+(restore-window-placement-rules "~/.stump/default-placements")
+
 ;; startup command
 (run-shell-command "~/.scripts/startup.sh")
