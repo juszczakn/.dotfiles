@@ -91,9 +91,17 @@
 (define-key *top-map* (kbd "XF86AudioPlay") "clementine-cmd -t")
 
 ;;--------------------------------------------------------------------
+(defvar *default-frames* "~/.stump/default-frames")
+(defvar *default-placements* "~/.stump/default-placements")
+
 (run-shell-command "~/.swapkeys.sh")
-(restore-from-file "~/.stump/default-frames")
-(restore-window-placement-rules "~/.stump/default-placements")
+(restore-from-file *default-frames*)
+(restore-window-placement-rules *default-placements*)
 
 ;; startup command
 (run-shell-command "~/.scripts/startup.sh")
+
+(defcommand save-and-quit () ()
+  (dump-desktop-to-file *default-frames*)
+  (dump-window-placement-rules *default-placements*)
+  (quit))
