@@ -20,7 +20,7 @@
   (run-or-raise "firefox" '(:class "Firefox")))
 (defcommand thunderbird () ()
   (run-or-raise "thunderbird" '(:class "Thunderbird")))
-(defcommand clementine (toggle) (:string)
+(defcommand clementine () ()
   (run-or-raise "clementine" '(:class "Clementine")))
 (defcommand xchat () ()
   (run-or-raise "xchat" '(:class "Xchat")))
@@ -91,6 +91,7 @@
 (define-key *top-map* (kbd "XF86AudioPlay") "clementine-cmd -t")
 
 ;;--------------------------------------------------------------------
+(run-shell-command "~/.swapkeys.sh")
 (restore-from-file "~/.stump/default-frames")
 (restore-window-placement-rules "~/.stump/default-placements")
 
