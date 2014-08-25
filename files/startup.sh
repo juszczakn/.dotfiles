@@ -8,3 +8,4 @@ sleep 1
 nm-applet &
 transmission-gtk &
 steam &
+gnome-keyring &

@@ -224,10 +224,10 @@
   (message (buffer-name)))
 
 (require 'buffer-move)
-(global-set-key (kbd "<C-s-up>") 'buf-move-up)
-(global-set-key (kbd "<C-s-down>") 'buf-move-down)
-(global-set-key (kbd "<C-s-left>") 'buf-move-left)
-(global-set-key (kbd "<C-s-right>") 'buf-move-right)
+(global-set-key (kbd "C-s-w") 'buf-move-up)
+(global-set-key (kbd "C-s-s") 'buf-move-down)
+(global-set-key (kbd "C-s-a") 'buf-move-left)
+(global-set-key (kbd "C-s-d") 'buf-move-right)
 
 (defun my-next-git-gutter-diff (arg)
   (interactive "p")

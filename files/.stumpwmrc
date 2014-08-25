@@ -10,7 +10,7 @@
 
 ;; Custom keybindings
 (defcommand screen-saver () ()
-  (run-shell-command "gnome-screensaver-command -l"))
+  (run-shell-command "gnome-screensaver-command -l && sleep 1 && xset dpms force off"))
 (defcommand xterminal () ()
   (run-shell-command "x-terminal-emulator"))
 (defcommand clementine-cmd (flag) (:string)
@@ -33,6 +33,9 @@
 (define-key *top-map* (kbd "s-Right") "move-window right")
 (define-key *top-map* (kbd "s-Left") "move-window left")
 (define-key *top-map* (kbd "s-Down") "move-window down")
+
+(define-key *top-map* (kbd "C-s-Right") "gnext-with-window")
+(define-key *top-map* (kbd "C-s-Left") "gprev-with-window")
 
 (define-key *top-map* (kbd "C-M-Right") "gnext")
 (define-key *top-map* (kbd "C-M-Left") "gprev")
@@ -60,6 +63,10 @@
 
 (define-key *root-map* (kbd "l") '*launcher-keybindings*)
 (define-key *root-map* (kbd "C-l") '*launcher-keybindings*)
+
+(dotimes (i 10)
+  (let ((i (format nil "~a" i)))
+    (define-key *root-map* (kbd i) (concat "gselect " i))))
 
 ;; Click to focus
 (setf *mouse-focus-policy* :click)
