@@ -4,7 +4,7 @@
 ;; was compiled with sbcl, due to
 ;; threading issues.
 (require 'swank)
-(swank:create-server)
+(swank:create-server :dont-close t)
 
 (in-package :stumpwm)
 
