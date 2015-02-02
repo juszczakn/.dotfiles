@@ -12,6 +12,7 @@
  '(global-linum-mode t)
  '(inhibit-startup-screen t)
  '(mark-even-if-inactive t)
+ '(safe-local-variable-values (quote ((Coding . utf-8))))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(tab-width 4)
@@ -39,20 +40,29 @@
 (defvar my-packages
   '(paredit
 	smex clojure-mode emacs-eclim company git-gutter
-	autopair highlight-current-line buffer-move magit
-    json-reformat))
+	autopair highlight-current-line buffer-move ;magit
+    json-reformat git-gutter-fringe))
 
 (dolist (p my-packages)
   (when (not (package-installed-p p))
 	(package-install p)))
 
-(add-to-list 'load-path "~/.emacs.d/manual-packages/rest-url-string")
-(add-to-list 'load-path "~/.emacs.d/manual-packages/emacs-git-gutter-fringe")
-(require 'rest-url-string)
-
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 ;; Replace "sbcl" with the path to your implementation
 (setf inferior-lisp-program "sbcl")
+
+(add-hook 'cider-repl-mode-hook 'company-mode)
+(add-hook 'cider-mode-hook 'company-mode)
+
+(add-to-list 'load-path "~/.emacs.d/manual-packages/rest-url-string")
+(require 'rest-url-string)
+
+(add-to-list 'load-path "~/.emacs.d/manual-packages/magit")
+(require 'magit)
+
+(add-to-list 'load-path "~/.emacs.d/manual-packages/clj2el")
+(require 'clj2el)
+(require 'clj2el-core)
 
 ;; so killing at end of line doesn't cause this.
 (defun kill-and-join-forward (&optional arg)
